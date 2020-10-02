@@ -10,6 +10,12 @@ interface Top10Props {
 }
 
 export default function Top10({products}: Top10Props){
+  async function handleSum() {
+    const { sum } = (await import('@/lib/math')).default;
+
+    alert(sum(3, 5))
+  }
+
   return (
     <div>
       <section>
@@ -25,12 +31,14 @@ export default function Top10({products}: Top10Props){
             })}
           </ul>
       </section>
+      <button type="button" onClick={handleSum}>Soma</button>
+
     </div>
   )
 }
 
 export const getStaticProps: GetStaticProps<Top10Props> = async(context) => {
-  const response = await fetch('http://localhost:3333/products');
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
   const products = await response.json();
 
   return {
